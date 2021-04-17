@@ -1,9 +1,11 @@
 import pytest
 
 from pages.basket_page import BasketPage
+from pages.main_page import MainPage
 from pages.product_page import ProductPage
 from pages.login_page import LoginPage
 
+import time
 
 
 #steps taken
@@ -77,6 +79,31 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page.should_be_message_empty_basket()
 
 
+class TestUserAddToBasketFromProductPage():
+    def test_user_cant_see_success_message(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()  # check that no success message about adding product to basket
+
+    def test_user_can_add_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
+        page = ProductPage(browser, link)  # initialization of Page Object, driver and url address are passed to constructor
+        page.open()  # open page
+        page.should_be_add_to_basket()  # check if Add to basket button is presented
+        page.product_add_to_basket()  # click on Add to basket button
+        page.should_be_product_name()  # product name in message is matched to product name on product page
+        page.should_be_product_price()  # product price in message is matched to product price on product page
+
+    def test_register(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
+        page = LoginPage(browser, link)
+        page.open()
+        email = str(time.time()) + "@fakemail.org"
+        page.fill_register_from(email, "123456789!o")
+        page.click_on_submit()
+        main_page = MainPage(browser, browser.current_url)
+        main_page.should_be_authorized_user()
 
 
 
