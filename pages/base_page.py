@@ -79,4 +79,8 @@ class BasePage:
         assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
                                                                      " probably unauthorised user"
 
+    def send_value(self, value, how, what, error_text):
+        assert self.is_element_present(how, what), error_text
+        element = self.browser.find_element(how, what)
+        element.send_keys(value)
 

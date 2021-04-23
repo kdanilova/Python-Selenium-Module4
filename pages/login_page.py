@@ -18,14 +18,11 @@ class LoginPage(BasePage):
         assert self.is_element_present(*LoginPageLocators.REGISTER_FORM), "Register form is not presented"
 
     def fill_register_from(self, email, password):
-        assert self.is_element_present(*LoginPageLocators.REGISTER_FORM_EMAIL), "email is not presented"
-        email_field = self.browser.find_element(*LoginPageLocators.REGISTER_FORM_EMAIL)
-        email_field.send_keys(email)
-        password_field1 = self.browser.find_element(*LoginPageLocators.REGISTER_FORM_PASSWORD)
-        password_field1.send_keys(password)
-        password_field2 = self.browser.find_element(*LoginPageLocators.REGISTER_FORM_CONFIRM_PASSWORD)
-        password_field2.send_keys(password)
+        self.send_value(email, *LoginPageLocators.REGISTER_FORM_EMAIL, "email field is not presented")
+        self.send_value(password, *LoginPageLocators.REGISTER_FORM_PASSWORD, "password field is not presented")
+        self.send_value(password, *LoginPageLocators.REGISTER_FORM_CONFIRM_PASSWORD, "confirm password field is not presented")
 
     def click_on_submit(self):
+        assert self.is_element_present(*LoginPageLocators.REGISTER_SUBMIT), "submit button is not presented"
         submit = self.browser.find_element(*LoginPageLocators.REGISTER_SUBMIT)
         submit.click()
